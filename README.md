@@ -17,6 +17,10 @@ Essa é uma extensão com vários snippets para facilitar o desenvolvimento de n
 
 ![](example.gif)
 
+## Download
+
+[Clique aqui](https://marketplace.visualstudio.com/items?itemName=gabrielrabelo.rapicaresnippet)
+
 ## Autor
 
 👨🏻‍💻 [Gabriel Rabelo](https://github.com/gabrielrab)
