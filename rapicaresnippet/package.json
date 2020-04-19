@@ -1,0 +1,23 @@
+{
+    "name": "rapicaresnippet",
+    "displayName": "RapicareSnippet",
+    "description": "Lista de snippets para ajudar no desenvolvimento de novas funcionalidades na API da Rapicare.",
+    "version": "0.0.1",
+    "publisher": "gabrielrabelo",
+    "repository": "https://github.com/gabrielrab/rapicare-vscode-snippets",
+    "engines": {
+        "vscode": "^1.44.0"
+    },
+    "author": "Gabriel Rabelo <@gabrielrab>",
+    "categories": [
+        "Snippets"
+    ],
+    "contributes": {
+        "snippets": [
+            {
+                "language": "javascript",
+                "path": "./snippets/snippets.json"
+            }
+        ]
+    }
+}
