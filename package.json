@@ -1,0 +1,11 @@
+{
+  "name": "rapicare-vscode-snippets",
+  "version": "1.0.0",
+  "description": "Snnipets para utilizaçao na arquitetura DDD da api da Rapicare",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Rabelo <@gabrielrab>",
+  "license": "ISC"
+}
