@@ -1,141 +1,297 @@
 {
-	"CreateUseCase": {
-		"scope": "javascript",
-		"prefix": "rp-create",
-		"body": [
-			"const CreateEntityUseCase = require('src/core/app/useCases/CreateEntityUseCase');",
-			"const ${1:NomeDaEntidade} = require('src/domain/entities/${1:NomeDaEntidade}');",
-			"",
-			"module.exports = class ${2:NomeDoUseCase} extends CreateEntityUseCase {",
-			"  constructor({ ${3:NomeDoRepositorio} }) {",
-			"    super();",
-			"    this.entity = ${1:NomeDaEntidade};",
-			"    this.repository = ${3:NomeDoRepositorio};",
-			"  }",
-			"};"
-		],
-		"description": "CreateUseCase"
-	},
-	"GetUseCase": {
-		"scope": "javascript",
-		"prefix": "rp-get",
-		"body": [
-			"const GetEntityUseCase = require('src/core/app/useCases/GetEntityUseCase');",
-			"",
-			"module.exports = class ${1:NomeDoUseCase} extends GetEntityUseCase {",
-			"  constructor({ ${2:NomeDoRepositorio} }) {",
-			"    super();",
-			"    this.repository = ${2:NomeDoRepositorio};",
-			"  }",
-			"};"
-		],
-		"description": "GetUseCase"
-	},
-	"DeleteUseCase": {
-		"scope": "javascript",
-		"prefix": "rp-delete",
-		"body": [
-			"const DeleteEntityUseCase = require('src/core/app/useCases/DeleteEntityUseCase');",
-			"",
-			"module.exports = class ${1:NomeDoUseCase} extends DeleteEntityUseCase {",
-			"  constructor({ ${2:NomeDoRepositorio} }) {",
-			"    super();",
-			"    this.repository = ${2:NomeDoRepositorio};",
-			"  }",
-			"};"
-		],
-		"description": "DeleteUseCase"
-	},
-	"ListUseCase": {
-		"scope": "javascript",
-		"prefix": "rp-list",
-		"body": [
-			"const ListEntityUseCase = require('src/core/app/useCases/ListEntityUseCase');",
-			"",
-			"module.exports = class ${1:NomeDoUseCase} extends ListEntityUseCase {",
-			"  constructor({ ${2:NomeDoRepositorio} }) {",
-			"    super();",
-			"    this.repository = ${2:NomeDoRepositorio};",
-			"  }",
-			"};"
-		],
-		"description": "ListUseCase"
-	},
-	"UpdateUseCase": {
-		"scope": "javascript",
-		"prefix": "rp-update",
-		"body": [
-			"const UpdateEntityUseCase = require('src/core/app/useCases/UpdateEntityUseCase');",
-			"",
-			"module.exports = class ${1:NomeDoUseCase} extends UpdateEntityUseCase {",
-			"  constructor({ ${2:NomeDoRepositorio} }) {",
-			"    super();",
-			"    this.repository = ${2:NomeDoRepositorio};",
-			"  }",
-			"};"
-		],
-		"description": "UpdateUseCase"
-	},
-	"CustomUseCase": {
-		"scope": "javascript",
-		"prefix": "rp-custom",
-		"body": [
-			"const UseCase = require('src/core/app/useCases/UseCase');",
-			"",
-			"class ${1:NomeDoUseCase} extends UseCase {",
-			"  constructor({ ${2:NomeDoRepositorio} }) {",
-			"    super();",
-			"    this.repository = ${2:NomeDoRepositorio};",
-			"  }",
-			"",
-			"async execute() {",
-			"    try {",
-			"      //code here",
-			"      this.emit('SUCCESS', true);",
-			"   } catch (error) {",
-			"      this.emitErrors(error);",
-			"    }",
-			"    return true;",
-			"  }",
-			"}",
-			"module.exports = ${1:NomeDoUseCase};"
-		],
-		"description": "CustomUseCase"
-	},
-	"Mapper": {
-		"scope": "javascript",
-		"prefix": "rp-mapper",
-		"body": [
-			"const ${1:Entidade} = require('src/domain/entities/${1:Entidade}');",
-			"",
-			"module.exports = {",
-			"  toDomain(data) {",
-			"    return new ${1:Entidade}(data);",
-			"  },",
-			"",
-			"  toDatabase(data) {",
-			"    return data.toJSON();",
-			"  },",
-			"};"
-		],
-		"description": "Mapper"
-	},
-	"Repositorio": {
-		"scope": "javascript",
-		"prefix": "rp-repository",
-		"body": [
-			"const Repository = require('src/core/infra/repos/Repository');",
-			"const ${1:Mapper} = require('src/infra/mappers/${1:Mapper}');",
-			"",
-			"module.exports = class ${2:NomeDoRepositorio} extends Repository {",
-			"  constructor({ ${3:Model}, currentUser }) {",
-			"    super();",
-			"    this.model = ${3:Model};",
-			"    this.mapper = ${1:Mapper};",
-			"    this.currentUser = currentUser;",
-			"  }",
-			"};"
-		],
-		"description": "Repositorio"
-	}
+  "CreateUseCase": {
+    "scope": "javascript",
+    "prefix": "rp-create",
+    "body": [
+      "const CreateEntityUseCase = require(\"src/core/app/useCases/CreateEntityUseCase\");",
+      "const ${1:NomeDaEntidade} = require(\"src/domain/entities/${1:NomeDaEntidade}\");",
+      "",
+      "module.exports = class ${2:NomeDoUseCase} extends CreateEntityUseCase {",
+      "  constructor({ ${3:NomeDoRepositorio}, currentUser }) {",
+      "    super();",
+      "    this.entity = ${1:NomeDaEntidade};",
+      "    this.repository = ${3:NomeDoRepositorio};",
+      "    this.currentUser = currentUser;",
+      "  }",
+      "",
+      "  stakeholders(entity) {",
+      "    return [",
+      "      { entity: \"User\", entityId: entity.userId, role: \"owner\" },",
+      "      { entity: \"Company\", entityId: entity.companyId, role: \"tenant\" },",
+      "      { entity: \"User\", entityId: this.currentUser.id, role: \"executor\" },",
+      "    ];",
+      "  }",
+      "",
+      "  async beforeCreate(data) {}",
+      "};"
+    ],
+    "description": "CreateUseCase"
+  },
+  "GetUseCase": {
+    "scope": "javascript",
+    "prefix": "rp-get",
+    "body": [
+      "const GetEntityUseCase = require('src/core/app/useCases/GetEntityUseCase');",
+      "",
+      "module.exports = class ${1:NomeDoUseCase} extends GetEntityUseCase {",
+      "  constructor({ ${2:NomeDoRepositorio} }) {",
+      "    super();",
+      "    this.repository = ${2:NomeDoRepositorio};",
+      "  }",
+      "};"
+    ],
+    "description": "GetUseCase"
+  },
+  "DeleteUseCase": {
+    "scope": "javascript",
+    "prefix": "rp-delete",
+    "body": [
+      "const DeleteEntityUseCase = require(\"src/core/app/useCases/DeleteEntityUseCase\");",
+      "",
+      "module.exports = class ${1:NomeDoUseCase} extends DeleteEntityUseCase {",
+      "  constructor({ ${2:NomeDoRepositorio}, currentUser }) {",
+      "    super();",
+      "    this.repository = ${2:NomeDoRepositorio};",
+      "    this.currentUser = currentUser;",
+      "  }",
+      "",
+      "  stakeholders(entity) {",
+      "    return [",
+      "      { entity: \"User\", entityId: entity.userId, role: \"owner\" },",
+      "      { entity: \"Company\", entityId: entity.companyId, role: \"tenant\" },",
+      "      { entity: \"User\", entityId: this.currentUser.id, role: \"executor\" },",
+      "    ];",
+      "  }",
+      "",
+      "  async beforeDelete(data) {}",
+      "};"
+    ],
+    "description": "DeleteUseCase"
+  },
+  "ListUseCase": {
+    "scope": "javascript",
+    "prefix": "rp-list",
+    "body": [
+      "const ListEntityUseCase = require(\"src/core/app/useCases/ListEntityUseCase\");",
+      "",
+      "module.exports = class ${1:NomeDoUseCase} extends ListEntityUseCase {",
+      "  constructor({ ${2:NomeDoRepositorio} }) {",
+      "    super();",
+      "    this.repository = ${2:NomeDoRepositorio};",
+      "  }",
+      "",
+      "  get filterables() {",
+      "    return [];",
+      "  }",
+      "};"
+    ],
+    "description": "ListUseCase"
+  },
+  "UpdateUseCase": {
+    "scope": "javascript",
+    "prefix": "rp-update",
+    "body": [
+      "const UpdateEntityUseCase = require(\"src/core/app/useCases/UpdateEntityUseCase\");",
+      "",
+      "module.exports = class ${1:NomeDoUseCase} extends UpdateEntityUseCase {",
+      "  constructor({ ${2:NomeDoRepositorio}, currentUser }) {",
+      "    super();",
+      "    this.repository = ${2:NomeDoRepositorio};",
+      "    this.currentUser = currentUser;",
+      "  }",
+      "",
+      "  stakeholders(entity) {",
+      "    return [",
+      "      { entity: \"User\", entityId: entity.userId, role: \"owner\" },",
+      "      { entity: \"Company\", entityId: entity.companyId, role: \"tenant\" },",
+      "      { entity: \"User\", entityId: this.currentUser.id, role: \"executor\" },",
+      "    ];",
+      "  }",
+      "",
+      "  async beforeUpdate(data) {}",
+      "};"
+    ],
+    "description": "UpdateUseCase"
+  },
+  "CustomUseCase": {
+    "scope": "javascript",
+    "prefix": "rp-custom",
+    "body": [
+      "const UseCase = require(\"src/core/app/useCases/UseCase\");",
+      "",
+      "class ${1:NomeDoUseCase} extends UseCase {",
+      "  constructor({ ${2:NomeDoRepositorio}, currentUser }) {",
+      "    super();",
+      "    this.repository = ${2:NomeDoRepositorio};",
+      "    this.user = currentUser;",
+      "  }",
+      "",
+      "  async handler() {",
+      "    //code here",
+      "    return true;",
+      "  }",
+      "}",
+      "",
+      "module.exports = ${1:NomeDoUseCase};"
+    ],
+    "description": "CustomUseCase"
+  },
+  "Mapper": {
+    "scope": "javascript",
+    "prefix": "rp-mapper",
+    "body": [
+      "const ${1:Entidade} = require('src/domain/entities/${1:Entidade}');",
+      "",
+      "module.exports = {",
+      "  toDomain(data) {",
+      "    return new ${1:Entidade}(data);",
+      "  },",
+      "",
+      "  toDatabase(data) {",
+      "    return data.toJSON();",
+      "  },",
+      "};"
+    ],
+    "description": "Mapper"
+  },
+  "Repositorio": {
+    "scope": "javascript",
+    "prefix": "rp-repository",
+    "body": [
+      "const Repository = require(\"src/core/infra/repos/Repository\");",
+      "const ${2:NomeDaEntidade} = require(\"src/infra/mappers/${2:NomeDaEntidade}\");",
+      "",
+      "module.exports = class ${1:NomeDoRepositorio} extends Repository {",
+      "  constructor({ ${1:NomeDoModel}, currentUser }) {",
+      "    super();",
+      "    this.model = ${3:NomeDoModel};",
+      "    this.mapper = ${2:NomeDaEntidade};",
+      "    this.currentUser = currentUser;",
+      "  }",
+      "",
+      "  //   get tentantPolicy() {",
+      "  //     return {",
+      "  //       where: {",
+      "  //         // add validation here",
+      "  //       },",
+      "  //     };",
+      "  //   }",
+      "};"
+    ],
+    "description": "Repositorio"
+  },
+  "Controller": {
+    "scope": "javascript",
+    "prefix": "rp-controller",
+    "body": [
+      "const RESTfulController = require(\"src/core/interfaces/http/controllers/RESTfulController\");",
+      "",
+      "module.exports = class ${1:NomeDoController} extends RESTfulController {",
+      "  constructor({",
+      "    List${2:NomeDaEntidade}UseCase,",
+      "    Get${2:NomeDaEntidade}UseCase,",
+      "    Create${2:NomeDaEntidade}UseCase,",
+      "    Update${2:NomeDaEntidade}UseCase,",
+      "    Delete${2:NomeDaEntidade}UseCase,",
+      "  }) {",
+      "    super();",
+      "    this.listUseCase = List${2:NomeDaEntidade}UseCase;",
+      "    this.getUseCase = Get${2:NomeDaEntidade}UseCase;",
+      "    this.createUseCase = Create${2:NomeDaEntidade}UseCase;",
+      "    this.updateUseCase = Update${2:NomeDaEntidade}UseCase;",
+      "    this.deleteUseCase = Delete${2:NomeDaEntidade}UseCase;",
+      "  }",
+      "",
+      "  custom() {",
+      "    const useCase = this.run(\"CustomUseCase\", {",
+      "      // data",
+      "    });",
+      "    // remember to select the correct type of response for the request",
+      "    useCase((data) => this.response.UpdatedHttpResponse(data));",
+      "  }",
+      "};"
+    ],
+    "description": "Controller"
+  },
+  "Event": {
+    "scope": "javascript",
+    "prefix": "rp-event",
+    "body": [
+      "const DomainEvent = require(\"src/core/domain/events/DomainEvent\");",
+      "const WithEventBridge = require(\"src/core/domain/events/withEventBridge\");",
+      "",
+      "module.exports = class ${1:NomeDoEvento} extends WithEventBridge(DomainEvent) {};"
+    ],
+    "description": "Event"
+  },
+  "Model": {
+    "scope": "javascript",
+    "prefix": "rp-model",
+    "body": [
+      "const model = (sequelize, type) => {",
+      "  const ${1:NomeDoModel} = sequelize.define(",
+      "    \"${1:NomeDoModel}\",",
+      "    {",
+      "      column: {",
+      "        type: type.INTEGER,",
+      "      },",
+      "    },",
+      "    {",
+      "      paranoid: true,",
+      "      underscored: true,",
+      "    }",
+      "  );",
+      "",
+      "  ${1:NomeDoModel}.associate = (models) => {};",
+      "",
+      "  return ${1:NomeDoModel};",
+      "};",
+      "",
+      "module.exports = model;"
+    ],
+    "description": "Model"
+  },
+  "Entity": {
+    "scope": "javascript",
+    "prefix": "rp-entity",
+    "body": [
+      "const { attributes } = require(\"structure\");",
+      "const Entity = require(\"src/core/domain/Entity\");",
+      "",
+      "const ${1:NomeDaEntidade} = attributes({",
+      "  id: {",
+      "    type: Number,",
+      "  },",
+      "  createdAt: {",
+      "    type: Date,",
+      "  },",
+      "  updatedAt: {",
+      "    type: Date,",
+      "  },",
+      "})(class ${1:NomeDaEntidade} extends Entity {});",
+      "",
+      "module.exports = ${1:NomeDaEntidade};"
+    ],
+    "description": "Entity"
+  },
+  "Listener": {
+    "scope": "javascript",
+    "prefix": "rp-listener",
+    "body": [
+      "const EventListener = require(\"src/core/app/listeners/EventListener\");",
+      "",
+      "module.exports = class ${1:NomeDoListener} extends EventListener {",
+      "  constructor({ ${2:NomeDoEvento}, ${3:NomeDoUseCase} }) {",
+      "    super();",
+      "    this.event = ${2:NomeDoEvento};",
+      "    this.useCase = ${3:NomeDoUseCase};",
+      "  }",
+      "",
+      "  handler(data) {",
+      "    this.useCase.execute(data);",
+      "  }",
+      "};"
+    ],
+    "description": "Listener"
+  }
 }

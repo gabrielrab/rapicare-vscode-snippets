@@ -12,6 +12,11 @@ Essa é uma extensão com vários snippets para facilitar o desenvolvimento de n
 - `rp-custom` : Gera um useCase de customizado
 - `rp-repository` : Gera um repositorio
 - `rp-mapper`: Gera um mapper
+- `rp-model`: Gera um Model
+- `rp-listner`: Gera um Listener
+- `rp-controller`: Gera um Controller
+- `rp-event`: Gera um Evento
+- `rp-entity`: Gera uma Entidade
 
 ## Autor
 
